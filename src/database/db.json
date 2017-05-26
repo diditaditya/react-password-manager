@@ -1,0 +1,76 @@
+{
+  "passwords": [
+    {
+      "url": "www",
+      "username": "ucok",
+      "password": "dotcom",
+      "createdAt": "2017-05-26T09:00:35.387Z",
+      "updatedAt": "",
+      "id": 1
+    },
+    {
+      "url": "wowowo",
+      "username": "ucok",
+      "password": "ucokok",
+      "createdAt": "2017-05-26T09:36:28.726Z",
+      "updatedAt": "",
+      "id": 2
+    },
+    {
+      "url": "wawawa",
+      "username": "wawa",
+      "password": "wawa",
+      "createdAt": "2017-05-26T10:35:35.676Z",
+      "updatedAt": "",
+      "id": 3
+    },
+    {
+      "url": "wewewe",
+      "username": "wewe",
+      "password": "wewe",
+      "createdAt": "2017-05-26T10:39:18.826Z",
+      "updatedAt": "",
+      "id": 4
+    },
+    {
+      "url": "wiwiwi",
+      "username": "wiwi",
+      "password": "wiwi",
+      "createdAt": "2017-05-26T10:39:45.777Z",
+      "updatedAt": "",
+      "id": 5
+    },
+    {
+      "url": "qaqa",
+      "username": "qaqa",
+      "password": "qaqa",
+      "createdAt": "2017-05-26T10:43:40.626Z",
+      "updatedAt": "",
+      "id": 6
+    },
+    {
+      "url": "qwqw",
+      "username": "qwqw",
+      "password": "qwqw",
+      "createdAt": "2017-05-26T10:44:55.880Z",
+      "updatedAt": "",
+      "id": 7
+    },
+    {
+      "url": "qsqs",
+      "username": "qsqs",
+      "password": "qsqs",
+      "createdAt": "2017-05-26T10:46:14.731Z",
+      "updatedAt": "",
+      "id": 8
+    },
+    {
+      "url": "aqaq",
+      "username": "aqaq",
+      "password": "aqaq",
+      "createdAt": "2017-05-26T10:48:42.142Z",
+      "updatedAt": "",
+      "id": 9
+    }
+  ]
+}
