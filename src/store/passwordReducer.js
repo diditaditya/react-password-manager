@@ -9,6 +9,7 @@ const initialState = {
 const passwordReducer = (state = initialState, action) => {
     switch (action.type) {
         case SAVE_PASSWORD_SUCCESS:
+            console.log([...state.savedPasswords, action.payload]);
             return {
                 ...state,
                 savedPasswords: [...state.savedPasswords, action.payload]

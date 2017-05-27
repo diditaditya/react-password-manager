@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import PasswordList from './PasswordList';
 import { fetchPasswords } from '../store/passwordAction';
+import style from '../style/style';
 
 class SearchPassword extends React.Component {
 
@@ -10,37 +11,49 @@ class SearchPassword extends React.Component {
         super(props);
         this.state = {
             savedPasswords: [],
-            searchString: ''
+            searchString: '',
+            searchMessage: ''
         }
     }
 
     searchStringChange(e) {
-        this.setState({
-            searchString: e.target.value
-        });
+        let string = e.target.value;
+        if(/[-?.\]\(\)\[+]/.test(string)) {
+            this.setState({
+                searchMessage: 'May not start with special characters such as ?, +, [, ], (, ), $, and so on'
+            });
+        } else {
+            this.setState({
+                searchString: string,
+                searchMessage: ''
+            });
+        }
+
+    }
+
+    search() {
+        if(this.state.searchString.length > 0) {
+            console.log(this.state.searchString);
+        }
     }
 
     render() {
         // console.log(this.state.savedPasswords);
-        console.log(this.props);
+        // console.log(this.props.savedPasswords);
         if(this.props.savedPasswords) {
             return (
-                    <div>
-                        <p>{this.state.savedPasswords.length}</p>
-                        <input type="text" value={this.state.searchString} onChange={(e)=> this.searchStringChange(e)}/>
-                        <button>Search</button>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>URL</th>
-                                    <th>Username</th>
-                                    <th>Password</th>
-                                    <th>Created at</th>
-                                    <th>Updated at</th>
-                                </tr>
-                            </thead>
-                            <PasswordList savedPasswords={this.state.savedPasswords}/>
-                        </table>
+                    <div style={style.bordered}>
+                        {/*<p>saved passwords in local state: {this.state.savedPasswords.length}</p>
+                        <p>saved passwords in props: {this.props.savedPasswords.length}</p>*/}
+                        <div className={style.textField} >
+                            <input className={style.input} type="text" value={this.state.searchString} onChange={(e)=> this.searchStringChange(e)} id="searchString" />
+                            <label className={style.label} htmlFor="searchString">Filter Keyword</label>
+                        </div>
+                        <span>    </span>
+                        {/*<button className={style.standardButton} onClick={() => this.search()} >Search</button>*/}
+                        <br/>
+                        <span>{this.state.searchMessage}</span>                    
+                        <PasswordList savedPasswords={this.state.savedPasswords} searchString={this.state.searchString} />
                     </div>
                 );
         } else {

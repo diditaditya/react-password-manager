@@ -8,7 +8,7 @@ class Header extends Component {
     return (
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React Password Manager</h2>
+          <h3>Welcome to React Password Manager</h3>
         </div>
     );
   }

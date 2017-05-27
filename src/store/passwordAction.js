@@ -1,10 +1,9 @@
 import axios from 'axios';
-import store from './configureStore';
+// import store from './configureStore';
 
 import { SAVE_PASSWORD_SUCCESS, SAVE_PASSWORD_FAILED, FETCH_PASSWORDS_SUCCESS, FETCH_PASSWORDS_FAILED } from './constants';
 
 export const savePasswordSuccess = (data) => {
-
     return {
         type: SAVE_PASSWORD_SUCCESS,
         payload: data
@@ -18,7 +17,7 @@ export const savePasswordFailed = () => {
 }
 
 export const fetchPasswordsSuccess = (passwords) => {
-    console.log('in action fetchPasswordsSuccess');
+    // console.log('in action fetchPasswordsSuccess');
     return {
         type: FETCH_PASSWORDS_SUCCESS,
         payload: passwords
@@ -39,7 +38,7 @@ export const savePassword = (data) => {
         let url = `http://localhost:${port}/passwords`;
         return axios.post(url, data)
             .then((response) => {
-                console.log('got response from axios')
+                // console.log('got response from axios')
                 dispatch(savePasswordSuccess(data));
             })
             .catch((err) => {
@@ -49,14 +48,14 @@ export const savePassword = (data) => {
 }
 
 export const fetchPasswords = () => {
-    console.log('in action fetchPassword')
+    // console.log('in action fetchPassword')
     return dispatch => {
-        console.log('in action fetchPassword line 56')
+        // console.log('in action fetchPassword line 56')
         let port = 4000;
         let url = `http://localhost:${port}/passwords`;
         return axios.get(url)
             .then((response) => {
-                console.log(response.data)
+                // console.log(response.data)
                 dispatch(fetchPasswordsSuccess(response.data));
             })
             .catch((err) => {
