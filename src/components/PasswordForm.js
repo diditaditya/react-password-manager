@@ -34,11 +34,21 @@ class PasswordForm extends React.Component {
         });
     }
 
+    getNewId() {
+        let maxId = 0;
+        this.props.savedPasswords.map((password) => {
+            if(password.id > maxId) {
+                maxId = password.id;
+            }
+        });
+        return maxId + 1;
+    }
+
     handleSubmit(event) {
-        console.log('in handle submit');
         if(this.state.url.length > 0 && this.state.username.length > 0 && this.state.password.length > 0) {
             let now = new Date();
             let data = {
+                id: this.getNewId(),
                 url: this.state.url,
                 username: this.state.username,
                 password: this.state.password,
@@ -89,34 +99,50 @@ class PasswordForm extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <fieldset style={style.bordered}>
-                    <legend>Save New Password</legend>
-                    <div>
-                        <div className={style.textField}>
-                            <input className={style.input} value={this.state.url} onChange={(e) => this.urlOnChange(e)} type="text" id="url"/>
-                            <label className={style.label} htmlFor="url">URL</label>
+        if(this.props.savedPasswords) {
+            return (
+                <div>
+                    <fieldset style={style.bordered}>
+                        <legend><h5>Save New Password</h5></legend>
+                        <div>
+                            <div className={style.textField}>
+                                <input className={style.input} value={this.state.url} onChange={(e) => this.urlOnChange(e)} type="text" id="url"/>
+                                <label className={style.label} htmlFor="url">URL</label>
+                            </div>
+                            <br/>
+                            <div className={style.textField}>
+                                <input className={style.input} value={this.state.username} onChange={(e) => this.usernameOnChange(e)} type="text" id="username" />
+                                <label className={style.label} htmlFor="username" >Username</label>
+                            </div>
+                            <br/>
+                            <div className={style.textField}>
+                                <input className={style.input} value={this.state.password} onChange={(e) => this.passwordOnChange(e)} type="password" id="password" />
+                                <label className={style.label} htmlFor="password" >Password</label>    
+                            </div>
+                            <br/>
                         </div>
                         <br/>
-                        <div className={style.textField}>
-                            <input className={style.input} value={this.state.username} onChange={(e) => this.usernameOnChange(e)} type="text" id="username" />
-                            <label className={style.label} htmlFor="username" >Username</label>
-                        </div>
-                        <br/>
-                        <div className={style.textField}>
-                            <input className={style.input} value={this.state.password} onChange={(e) => this.passwordOnChange(e)} type="password" id="password" />
-                            <label className={style.label} htmlFor="password" >Password</label>    
-                        </div>
-                        <br/>
-                    </div>
-                    <br/>
-                    <button className={style.standardButton}  onClick={()=>this.handleSubmit()} >Save</button>
-                    <p>{this.state.message}</p>
-                </fieldset>
-            </div>
-        );
+                        <button className={style.standardButton}  onClick={()=>this.handleSubmit()} >Save</button>
+                        <p>{this.state.message}</p>
+                    </fieldset>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <div class="mdl-spinner mdl-js-spinner is-active"></div>
+                </div>
+            );
+            
+        }
+        
     }
+}
+
+const mapStateToProps = (state) => {
+    return ({
+        savedPasswords: state.savedPasswords
+    });
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -125,4 +151,4 @@ const mapDispatchToProps = (dispatch) => {
     });
 }
 
-export default connect(null, mapDispatchToProps)(PasswordForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PasswordForm);

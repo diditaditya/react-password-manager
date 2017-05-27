@@ -1,13 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import style from '../style/style';
+import { deletePassword } from '../store/passwordAction';
+import PasswordItem from './PasswordItem';
 
 class PasswordList extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            savedPasswords: [],
+            savedPasswords: null,
         }
     }
 
@@ -27,14 +30,19 @@ class PasswordList extends React.Component {
         }
     }
 
+    // deletePassword(index, id) {
+    //     console.log(index);
+    //     console.log(id);
+    //     console.log(this.props);
+    //     this.props.deletePassword({index: index, id: id});
+    // }
+
     render() {
         if(this.props.savedPasswords) {
-            // console.log(this.props.savedPasswords.length);
-            // console.log(this.state.savedPasswords.length);
             if(this.props.savedPasswords.length > 0) {
-                // console.log(this.props.savedPasswords);
                 return (
                     <div>
+                        {/*<p>this.props.savedPasswords.length: {this.props.savedPasswords.length}</p>*/}
                         <table className={style.table} style={style.center}>
                             <thead>
                                 <tr>
@@ -51,16 +59,19 @@ class PasswordList extends React.Component {
                                 {this.props.savedPasswords.map((password, index) => {
                                     let pattern = new RegExp(this.props.searchString+'.*');
                                     let urlTest = pattern.test(password.url.toLowerCase());
-                                    if (urlTest) {
-                                        return <tr key={index}>
+                                    let usernameTest = pattern.test(password.username.toLowerCase());
+                                    let passwordTest = pattern.test(password.password.toLowerCase());
+                                    if (urlTest || usernameTest || passwordTest) {
+                                        return <PasswordItem key={index} password={password} index={index} />
+                                        {/*return <tr key={index}>
                                             <td> {password.url} </td>
                                             <td> {password.username} </td>
                                             <td> {password.password} </td>
                                             <td> {this.convertDate(password.createdAt)} </td>
                                             <td> {this.convertDate(password.updatedAt)} </td>
                                             <td> <i className="material-icons" style={style.clickable}>create</i> </td>
-                                            <td> <i className="material-icons" style={style.clickable}>clear</i> </td>
-                                        </tr>
+                                            <td> <i onClick={this.deletePassword.bind(this, index, password.id)} className="material-icons" style={style.clickable}>clear</i> </td>
+                                        </tr>*/}
                                     }
                                 })}
                             </tbody>
@@ -70,7 +81,7 @@ class PasswordList extends React.Component {
             } else {
                 return (
                     <div>
-                        <h3>No password entry is found</h3>
+                        <h5>No saved passwords</h5>
                     </div>
                 );
             }
@@ -79,24 +90,32 @@ class PasswordList extends React.Component {
             return (
                  <div>
                     <div class="mdl-spinner mdl-js-spinner is-active"></div>
-                    <h3>Loading data ..</h3>
+                    <h5>Loading data ..</h5>
                 </div>
             );
         }
     }
 
-    // componentDidUpdate() {
-    //     if(this.props.savedPasswords) {
-    //         if(this.props.savedPasswords.length === 0) {
-    //             console.log(this.props.savedPasswords);
-    //             this.setState({
-    //                 savedPasswords: this.props.savedPasswords
-    //             });
-    //             console.log(this.state.savedPasswords);
-    //         }
-    //     }
-    // }
+    componentDidUpdate() {
+        if(this.props.savedPasswords) {
+            if(this.state.savedPasswords) {
+                let passwordArr = this.props.savedPasswords;
+                passwordArr.map((password) => {
+                    password.editFormStatus = false
+                });
+                this.setState({
+                    savedPasswords: passwordArr
+                });
+            }
+        }
+    }
 
 }
 
-export default PasswordList;
+const mapDispatchToProps = (dispatch) => {
+    return ({
+        deletePasswordFromList: (data) => dispatch(deletePassword(data))
+    });
+}
+
+export default connect(null, mapDispatchToProps)(PasswordList);

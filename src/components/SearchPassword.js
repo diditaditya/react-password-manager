@@ -10,7 +10,6 @@ class SearchPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            savedPasswords: [],
             searchString: '',
             searchMessage: ''
         }
@@ -18,8 +17,9 @@ class SearchPassword extends React.Component {
 
     searchStringChange(e) {
         let string = e.target.value;
-        if(/[-?.\]\(\)\[+]/.test(string)) {
+        if(/[-?.\])(\[+]/.test(string)) {
             this.setState({
+                searchString: '',
                 searchMessage: 'May not start with special characters such as ?, +, [, ], (, ), $, and so on'
             });
         } else {
@@ -38,22 +38,22 @@ class SearchPassword extends React.Component {
     }
 
     render() {
-        // console.log(this.state.savedPasswords);
-        // console.log(this.props.savedPasswords);
         if(this.props.savedPasswords) {
             return (
-                    <div style={style.bordered}>
-                        {/*<p>saved passwords in local state: {this.state.savedPasswords.length}</p>
-                        <p>saved passwords in props: {this.props.savedPasswords.length}</p>*/}
-                        <div className={style.textField} >
-                            <input className={style.input} type="text" value={this.state.searchString} onChange={(e)=> this.searchStringChange(e)} id="searchString" />
-                            <label className={style.label} htmlFor="searchString">Filter Keyword</label>
-                        </div>
-                        <span>    </span>
-                        {/*<button className={style.standardButton} onClick={() => this.search()} >Search</button>*/}
-                        <br/>
-                        <span>{this.state.searchMessage}</span>                    
-                        <PasswordList savedPasswords={this.state.savedPasswords} searchString={this.state.searchString} />
+                    <div>
+                        <fieldset style={style.bordered}>
+                            <legend><h5>Saved Passwords</h5></legend>
+                            <div className={style.textField} >
+                                <input className={style.input} type="text" value={this.state.searchString} onChange={(e)=> this.searchStringChange(e)} id="searchString" />
+                                <label className={style.label} htmlFor="searchString">Filter Keyword</label>
+                            </div>
+                            <span>    </span>
+                            <br/>
+                            <span>{this.state.searchMessage}<br/></span>
+                            {/*<p>this.props.savedPasswords.length: {this.props.savedPasswords.length}</p>*/}
+                            <PasswordList savedPasswords={this.props.savedPasswords} searchString={this.state.searchString} />
+                        </fieldset>
+                        
                     </div>
                 );
         } else {
@@ -73,13 +73,13 @@ class SearchPassword extends React.Component {
     }
 
     componentDidUpdate() {
-        if(this.props.savedPasswords) {
-            if(this.state.savedPasswords.length !== this.props.savedPasswords.length) {
-                this.setState({
-                    savedPasswords: this.props.savedPasswords
-                });
-            }
-        }
+        // if(this.props.savedPasswords) {
+        //     if(this.state.savedPasswords.length !== this.props.savedPasswords.length) {
+        //         this.setState({
+        //             savedPasswords: this.props.savedPasswords
+        //         });
+        //     }
+        // }
     }
 
 }
