@@ -39,9 +39,23 @@ class PasswordItem extends React.Component {
     }
 
     closeEditForm() {
-        this.setState({
-            editMode:false
-        });
+        let isUrlChanged = this.state.url !== this.props.password.url;
+        let isUsernameChanged = this.state.username !== this.props.password.username;
+        let isPasswordChanged = this.state.password !== this.props.password.password;
+        if(isUrlChanged || isUsernameChanged || isPasswordChanged) {
+            if(window.confirm('Do you want to discard the change?')) {
+                this.setState({
+                    url: this.props.password.url,
+                    username: this.props.password.username,
+                    password: this.props.password.password,
+                    editMode: false
+                });
+            }
+        } else {
+            this.setState({
+                editMode:false
+            });
+        }
     }
 
     onUrlChange(e) {
@@ -63,19 +77,24 @@ class PasswordItem extends React.Component {
     }
 
     updatePassword() {
-        let now = new Date();
-        let data = {
-            id: this.props.password.id,
-            url: this.state.url,
-            username: this.state.username,
-            password: this.state.password,
-            createdAt: this.props.password.createdAt,
-            updatedAt: now.toISOString()
-        };
-        this.props.updatePassword(this.props.index, data);
-        this.setState({
-            editMode: false
-        });
+        let isUrlChanged = this.state.url !== this.props.password.url;
+        let isUsernameChanged = this.state.username !== this.props.password.username;
+        let isPasswordChanged = this.state.password !== this.props.password.password;
+        if(isUrlChanged || isUsernameChanged || isPasswordChanged) {
+            let now = new Date();
+            let data = {
+                id: this.props.password.id,
+                url: this.state.url,
+                username: this.state.username,
+                password: this.state.password,
+                createdAt: this.props.password.createdAt,
+                updatedAt: now.toISOString()
+            };
+            this.props.updatePassword(this.props.index, data);
+            this.setState({
+                editMode: false
+            });
+        }
     }
 
     deletePassword(index, id) {
@@ -101,13 +120,13 @@ class PasswordItem extends React.Component {
             } else {
                 return (
                     <tr>
-                        <td> {this.props.password.url} </td>
-                        <td> {this.props.password.username} </td>
-                        <td> {this.props.password.password} </td>
-                        <td> {this.convertDate(this.props.password.createdAt)} </td>
-                        <td> {this.convertDate(this.props.password.updatedAt)} </td>
-                        <td> <i onClick={this.openEditForm.bind(this)}  className="material-icons" style={style.clickable}>create</i> </td>
-                        <td> <i onClick={this.deletePassword.bind(this, this.props.index, this.props.password.id)} className="material-icons" style={style.clickable}>clear</i> </td>
+                        <td style={style.center}> {this.props.password.url} </td>
+                        <td style={style.center}> {this.props.password.username} </td>
+                        <td style={style.center}> {this.props.password.password} </td>
+                        <td style={style.center}> {this.convertDate(this.props.password.createdAt)} </td>
+                        <td style={style.center}> {this.convertDate(this.props.password.updatedAt)} </td>
+                        <td style={style.center}> <i onClick={this.openEditForm.bind(this)}  className="material-icons" style={style.clickable}>create</i> </td>
+                        <td style={style.center}> <i onClick={this.deletePassword.bind(this, this.props.index, this.props.password.id)} className="material-icons" style={style.clickable}>clear</i> </td>
                     </tr>
                 );
             }    

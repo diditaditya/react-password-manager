@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { savePassword } from '../store/passwordAction';
 import style from '../style/style';
+import ValidationList from './ValidationList';
 
 class PasswordForm extends React.Component {
 
@@ -12,8 +13,31 @@ class PasswordForm extends React.Component {
             url: '',
             username: '',
             password: '',
-            message: ''
+            message: '',
+            validation: {
+                isCapitalLetter: false,
+                isNumber: false,
+                isSpecialChar: false,
+                isLongerThan5: false
+            }
         };
+    }
+
+    isCapitalLetter(string) {
+        return /[A-Z]/.test(string)
+    }
+
+    isNumber(string) {
+        return /[0-9]/.test(string)
+    }
+
+    isSpecialChar(string) {
+        // [!"#$%&'\(\)\*\+,-\.\/:;<=>\?@\[\\\]\^_`{|}~]
+        return /[!@#$%^&*)(\-_+=}\]{\[|\\:;"'<,>.?\/]/.test(string)
+    }
+
+    isLongerThan5(string) {
+        return string.length > 5
     }
 
     urlOnChange(event) {
@@ -29,8 +53,15 @@ class PasswordForm extends React.Component {
     }
 
     passwordOnChange(event) {
+        let string = event.target.value
         this.setState({
-            password: event.target.value
+            password: string,
+            validation: {
+                isCapitalLetter: this.isCapitalLetter(string),
+                isNumber: this.isNumber(string),
+                isSpecialChar: this.isSpecialChar(string),
+                isLongerThan5: this.isLongerThan5(string)
+            }
         });
     }
 
@@ -46,22 +77,28 @@ class PasswordForm extends React.Component {
 
     handleSubmit(event) {
         if(this.state.url.length > 0 && this.state.username.length > 0 && this.state.password.length > 0) {
-            let now = new Date();
-            let data = {
-                id: this.getNewId(),
-                url: this.state.url,
-                username: this.state.username,
-                password: this.state.password,
-                createdAt: now.toISOString(),
-                updatedAt: ''
+            let containsCapitalLetter = this.state.validation.isCapitalLetter;
+            let containsNumber = this.state.validation.isNumber;
+            let containsSpecialChar = this.state.validation.isSpecialChar;
+            let isLongerThan5 = this.state.validation.isLongerThan5;
+            if( containsCapitalLetter && containsNumber && containsSpecialChar && isLongerThan5) {
+                let now = new Date();
+                let data = {
+                    id: this.getNewId(),
+                    url: this.state.url,
+                    username: this.state.username,
+                    password: this.state.password,
+                    createdAt: now.toISOString(),
+                    updatedAt: ''
+                }
+                this.props.savePassword(data);
+                this.setState({
+                    url: '',
+                    username: '',
+                    password: '',
+                    message: ''
+                });
             }
-            this.props.savePassword(data);
-            this.setState({
-                url: '',
-                username: '',
-                password: '',
-                message: ''
-            });
         } else {
             this.setState({
                 message: "url, username, and password are required"
@@ -101,30 +138,42 @@ class PasswordForm extends React.Component {
     render() {
         if(this.props.savedPasswords) {
             return (
-                <div>
-                    <fieldset style={style.bordered}>
-                        <legend><h5>Save New Password</h5></legend>
-                        <div>
-                            <div className={style.textField}>
-                                <input className={style.input} value={this.state.url} onChange={(e) => this.urlOnChange(e)} type="text" id="url"/>
-                                <label className={style.label} htmlFor="url">URL</label>
+                <div className="mdl-grid">
+                    <div className="mdl-cell mdl-cell--3-col" ></div>
+                    <div className="mdl-cell mdl-cell--6-col">
+                        <fieldset style={style.bordered}>
+                            <legend><h5>Save New Password</h5></legend>
+                            <div className="mdl-grid" >
+                                <div className="mdl-cell mdl-cell--6-col">
+                                    <div>
+                                        <div className={style.textField}>
+                                            <input className={style.input} value={this.state.url} onChange={(e) => this.urlOnChange(e)} type="text" id="url"/>
+                                            <label className={style.label} htmlFor="url">URL</label>
+                                        </div>
+                                        <br/>
+                                        <div className={style.textField}>
+                                            <input className={style.input} value={this.state.username} onChange={(e) => this.usernameOnChange(e)} type="text" id="username" />
+                                            <label className={style.label} htmlFor="username" >Username</label>
+                                        </div>
+                                        <br/>
+                                        <div className={style.textField}>
+                                            <input className={style.input} value={this.state.password} onChange={(e) => this.passwordOnChange(e)} type="password" id="password" />
+                                            <label className={style.label} htmlFor="password" >Password</label>    
+                                        </div>
+                                        <br/>
+                                    </div>
+                                    <br/>
+                                    <button className={style.standardButton}  onClick={()=>this.handleSubmit()} >Save</button>
+                                    <p>{this.state.message}</p>
+                                </div>
+
+                                <div className="mdl-cell mdl-cell--6-col">
+                                    <ValidationList validation={this.state.validation}/>
+                                </div>
                             </div>
-                            <br/>
-                            <div className={style.textField}>
-                                <input className={style.input} value={this.state.username} onChange={(e) => this.usernameOnChange(e)} type="text" id="username" />
-                                <label className={style.label} htmlFor="username" >Username</label>
-                            </div>
-                            <br/>
-                            <div className={style.textField}>
-                                <input className={style.input} value={this.state.password} onChange={(e) => this.passwordOnChange(e)} type="password" id="password" />
-                                <label className={style.label} htmlFor="password" >Password</label>    
-                            </div>
-                            <br/>
-                        </div>
-                        <br/>
-                        <button className={style.standardButton}  onClick={()=>this.handleSubmit()} >Save</button>
-                        <p>{this.state.message}</p>
-                    </fieldset>
+                        </fieldset>
+                    </div>
+                    <div className="mdl-cell mdl-cell--3-col"></div>
                 </div>
             );
         } else {

@@ -17,8 +17,10 @@ class App extends Component {
         <p className="App-intro">
           To get started, fill <code>password form</code> and save.
         </p>
-        <PasswordForm/>
-        <SearchPassword/>
+        <div>
+          <PasswordForm/>
+          <SearchPassword/>
+        </div>
       </div>
     );
   }

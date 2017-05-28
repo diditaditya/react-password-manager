@@ -18,7 +18,30 @@ const clickable = {
 
 const edit = {
     textAlign: "center",
-    fontSize: "12px",
+    fontSize: "1em",
+}
+
+const biggerText = {
+    fontSize: "1em"
+}
+
+const listSmall = {
+    fontSize: "1em",
+    textAlign: "left",
+    margin: 0,
+    padding: 0
+}
+
+const valid = {
+
+}
+
+const invalid = {
+
+}
+
+const highlighted = {
+
 }
 
 export default {
@@ -30,5 +53,10 @@ export default {
     center: center,
     bordered: bordered,
     clickable: clickable,
-    edit: edit
+    edit: edit,
+    biggerText: biggerText,
+    listSmall: listSmall,
+    valid,
+    invalid,
+    highlighted
 };
