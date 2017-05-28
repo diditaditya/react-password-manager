@@ -5,11 +5,11 @@ import style from '../style/style';
 const IsValidIcon = (props) => {
     if(props.isValid) {
         return (
-            <i className="material-icons">done</i>
+            <i className="material-icons" style={{color: "springgreen"}} >done</i>
         );
     } else {
         return (
-            <i className="material-icons">clear</i>
+            <i className="material-icons" style={{color: "crimson"}} >clear</i>
         );
     }
 }

@@ -5,6 +5,18 @@ import { savePassword } from '../store/passwordAction';
 import style from '../style/style';
 import ValidationList from './ValidationList';
 
+const PasswordVisibility = (props) => {
+    if(props.isShown) {
+        return (
+            <span><i className="material-icons" style={style.showPassword} title="Don't Show Password">visibility_off</i> </span>
+        );
+    } else {
+        return (
+            <span><i className="material-icons" style={style.showPassword} title="Show Password">visibility</i> </span>
+        );
+    }
+}
+
 class PasswordForm extends React.Component {
 
     constructor(props) {
@@ -19,8 +31,24 @@ class PasswordForm extends React.Component {
                 isNumber: false,
                 isSpecialChar: false,
                 isLongerThan5: false
-            }
+            },
+            showPassword: false
         };
+        this.inputType = 'password'
+    }
+
+    toggleShowPassword() {
+        if(this.state.showPassword) {
+            this.setState({
+                showPassword: false
+            });
+            this.inputType = 'password';
+        } else {
+            this.setState({
+                showPassword: true
+            });
+            this.inputType = 'text'
+        }
     }
 
     isCapitalLetter(string) {
@@ -32,7 +60,6 @@ class PasswordForm extends React.Component {
     }
 
     isSpecialChar(string) {
-        // [!"#$%&'\(\)\*\+,-\.\/:;<=>\?@\[\\\]\^_`{|}~]
         return /[!@#$%^&*)(\-_+=}\]{\[|\\:;"'<,>.?\/]/.test(string)
     }
 
@@ -76,6 +103,9 @@ class PasswordForm extends React.Component {
     }
 
     handleSubmit(event) {
+        this.setState({
+                message: ''
+            });
         if(this.state.url.length > 0 && this.state.username.length > 0 && this.state.password.length > 0) {
             let containsCapitalLetter = this.state.validation.isCapitalLetter;
             let containsNumber = this.state.validation.isNumber;
@@ -135,6 +165,10 @@ class PasswordForm extends React.Component {
         }
     }
 
+    test() {
+        alert('qqeqe');
+    }
+
     render() {
         if(this.props.savedPasswords) {
             return (
@@ -157,8 +191,8 @@ class PasswordForm extends React.Component {
                                         </div>
                                         <br/>
                                         <div className={style.textField}>
-                                            <input className={style.input} value={this.state.password} onChange={(e) => this.passwordOnChange(e)} type="password" id="password" />
-                                            <label className={style.label} htmlFor="password" >Password</label>    
+                                            <input className={style.input} value={this.state.password} onChange={(e) => this.passwordOnChange(e)} type={this.inputType} id="password" />
+                                            <label className={style.label} htmlFor="password">Password</label>
                                         </div>
                                         <br/>
                                     </div>
@@ -166,9 +200,9 @@ class PasswordForm extends React.Component {
                                     <button className={style.standardButton}  onClick={()=>this.handleSubmit()} >Save</button>
                                     <p>{this.state.message}</p>
                                 </div>
-
                                 <div className="mdl-cell mdl-cell--6-col">
                                     <ValidationList validation={this.state.validation}/>
+                                    <span onClick={()=> this.toggleShowPassword()}><PasswordVisibility isShown={this.state.showPassword} /></span>
                                 </div>
                             </div>
                         </fieldset>

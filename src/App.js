@@ -14,9 +14,6 @@ class App extends Component {
     return (
       <div className="App">
         <Header/>
-        <p className="App-intro">
-          To get started, fill <code>password form</code> and save.
-        </p>
         <div>
           <PasswordForm/>
           <SearchPassword/>

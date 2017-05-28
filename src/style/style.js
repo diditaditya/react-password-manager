@@ -32,16 +32,10 @@ const listSmall = {
     padding: 0
 }
 
-const valid = {
-
-}
-
-const invalid = {
-
-}
-
-const highlighted = {
-
+const showPassword = {
+    ...clickable,
+    fontSize: 24,
+    marginTop: 40
 }
 
 export default {
@@ -50,13 +44,11 @@ export default {
     textField: "mdl-textfield mdl-js-textfield mdl-textfield--floating-label",
     input: "mdl-textfield__input",
     label: "mdl-textfield__label",
-    center: center,
-    bordered: bordered,
-    clickable: clickable,
-    edit: edit,
-    biggerText: biggerText,
-    listSmall: listSmall,
-    valid,
-    invalid,
-    highlighted
+    center,
+    bordered,
+    clickable,
+    edit,
+    biggerText,
+    listSmall,
+    showPassword
 };
