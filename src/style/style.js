@@ -35,7 +35,8 @@ const listSmall = {
 const showPassword = {
     ...clickable,
     fontSize: 24,
-    marginTop: 40
+    marginTop: 5,
+    marginLeft: 10
 }
 
 export default {

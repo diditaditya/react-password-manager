@@ -8,11 +8,11 @@ import ValidationList from './ValidationList';
 const PasswordVisibility = (props) => {
     if(props.isShown) {
         return (
-            <span><i className="material-icons" style={style.showPassword} title="Don't Show Password">visibility_off</i> </span>
+            <span><i className="material-icons" style={style.showPassword} title="Don't Show Password">visibility</i> </span>
         );
     } else {
         return (
-            <span><i className="material-icons" style={style.showPassword} title="Show Password">visibility</i> </span>
+            <span><i className="material-icons" style={style.showPassword} title="Show Password">visibility_off</i> </span>
         );
     }
 }
@@ -28,6 +28,7 @@ class PasswordForm extends React.Component {
             message: '',
             validation: {
                 isCapitalLetter: false,
+                isSmallLetter: false,
                 isNumber: false,
                 isSpecialChar: false,
                 isLongerThan5: false
@@ -53,6 +54,10 @@ class PasswordForm extends React.Component {
 
     isCapitalLetter(string) {
         return /[A-Z]/.test(string)
+    }
+
+    isLowercaseLetter(string) {
+        return /[a-z]/.test(string)
     }
 
     isNumber(string) {
@@ -85,6 +90,7 @@ class PasswordForm extends React.Component {
             password: string,
             validation: {
                 isCapitalLetter: this.isCapitalLetter(string),
+                isSmallLetter: this.isLowercaseLetter(string),
                 isNumber: this.isNumber(string),
                 isSpecialChar: this.isSpecialChar(string),
                 isLongerThan5: this.isLongerThan5(string)
@@ -108,10 +114,11 @@ class PasswordForm extends React.Component {
             });
         if(this.state.url.length > 0 && this.state.username.length > 0 && this.state.password.length > 0) {
             let containsCapitalLetter = this.state.validation.isCapitalLetter;
+            let containsSmallLetter = this.state.validation.isSmallLetter;
             let containsNumber = this.state.validation.isNumber;
             let containsSpecialChar = this.state.validation.isSpecialChar;
             let isLongerThan5 = this.state.validation.isLongerThan5;
-            if( containsCapitalLetter && containsNumber && containsSpecialChar && isLongerThan5) {
+            if( containsCapitalLetter && containsSmallLetter  && containsNumber && containsSpecialChar && isLongerThan5) {
                 let now = new Date();
                 let data = {
                     id: this.getNewId(),
@@ -134,7 +141,7 @@ class PasswordForm extends React.Component {
                 message: "url, username, and password are required"
             });
         }
-        
+
     }
 
     convertDateToSave(oriDate) {
@@ -179,6 +186,7 @@ class PasswordForm extends React.Component {
                             <legend><h5>Save New Password</h5></legend>
                             <div className="mdl-grid" >
                                 <div className="mdl-cell mdl-cell--6-col">
+                                    <span onClick={()=> this.toggleShowPassword()}><PasswordVisibility isShown={this.state.showPassword} /></span>
                                     <div>
                                         <div className={style.textField}>
                                             <input className={style.input} value={this.state.url} onChange={(e) => this.urlOnChange(e)} type="text" id="url"/>
@@ -201,8 +209,8 @@ class PasswordForm extends React.Component {
                                     <p>{this.state.message}</p>
                                 </div>
                                 <div className="mdl-cell mdl-cell--6-col">
+
                                     <ValidationList validation={this.state.validation}/>
-                                    <span onClick={()=> this.toggleShowPassword()}><PasswordVisibility isShown={this.state.showPassword} /></span>
                                 </div>
                             </div>
                         </fieldset>
@@ -216,9 +224,9 @@ class PasswordForm extends React.Component {
                     <div class="mdl-spinner mdl-js-spinner is-active"></div>
                 </div>
             );
-            
+
         }
-        
+
     }
 }
 

@@ -5,7 +5,7 @@ const color = (isValid) => {
         fontSize: 10
     }
     if(isValid) {
-        style.color = "springgreen"; 
+        style.color = "springgreen";
     } else {
         style.color = "crimson";
     }
@@ -18,6 +18,15 @@ export const IsCapitalValidIcon = (props) => {
     }
     return (
         <span style={color(isValid(props.password))} title="Capital Letter"><b>ABC </b></span>
+    );
+}
+
+export const IsLowercaseValidIcon = (props) => {
+    let isValid = (string) => {
+        return /[a-z]/.test(string)
+    }
+    return (
+        <span style={color(isValid(props.password))} title="Lowercase Letter"><b>abc </b></span>
     );
 }
 

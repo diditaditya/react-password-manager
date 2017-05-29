@@ -25,6 +25,10 @@ class ValidationList extends React.Component {
                         Password must contain at least one capital letter
                     </li>
                     <li className="mdl-list__item" style={style.listSmall}>
+                        <IsValidIcon isValid={this.props.validation.isSmallLetter}/>
+                        Password must contain at least one lower-case letter
+                    </li>
+                    <li className="mdl-list__item" style={style.listSmall}>
                         <IsValidIcon isValid={this.props.validation.isNumber}/>
                         Password must contain at least one number
                     </li>

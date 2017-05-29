@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import style from '../style/style';
 import { deletePassword, updatePassword } from '../store/passwordAction';
 
-import { IsCapitalValidIcon, IsNumberValidIcon, IsSpecialValidIcon, IsLongValidIcon } from './PasswordEditValidIcons';
+import { IsCapitalValidIcon,
+  IsLowercaseValidIcon,
+  IsNumberValidIcon,
+  IsSpecialValidIcon,
+  IsLongValidIcon } from './PasswordEditValidIcons';
 
 class PasswordItem extends React.Component {
 
@@ -17,6 +21,7 @@ class PasswordItem extends React.Component {
             password: '',
             validation: {
                 isCapitalLetter: false,
+                isLowercaseLetter: false,
                 isNumber: false,
                 isSpecialChar: false,
                 isLongerThan5: false
@@ -42,6 +47,10 @@ class PasswordItem extends React.Component {
 
     isCapitalLetter(string) {
         return /[A-Z]/.test(string)
+    }
+
+    isLowercaseLetter(string) {
+        return /[a-z]/.test(string)
     }
 
     isNumber(string) {
@@ -100,6 +109,7 @@ class PasswordItem extends React.Component {
             password: string,
             validation: {
                 isCapitalLetter: this.isCapitalLetter(string),
+                isLowercaseLetter: this.isLowercaseLetter(string),
                 isNumber: this.isNumber(string),
                 isSpecialChar: this.isSpecialChar(string),
                 isLongerThan5: this.isLongerThan5(string)
@@ -110,10 +120,11 @@ class PasswordItem extends React.Component {
     updatePassword() {
         if(this.state.url.length > 0 && this.state.username.length > 0 && this.state.password.length > 0) {
             let containsCapitalLetter = this.state.validation.isCapitalLetter;
+            let containsLowercaseLetter = this.state.validation.isLowercaseLetter;
             let containsNumber = this.state.validation.isNumber;
             let containsSpecialChar = this.state.validation.isSpecialChar;
             let isLongerThan5 = this.state.validation.isLongerThan5;
-            if( containsCapitalLetter && containsNumber && containsSpecialChar && isLongerThan5) {
+            if( containsCapitalLetter && containsLowercaseLetter && containsNumber && containsSpecialChar && isLongerThan5) {
                 let isUrlChanged = this.state.url !== this.props.password.url;
                 let isUsernameChanged = this.state.username !== this.props.password.username;
                 let isPasswordChanged = this.state.password !== this.props.password.password;
@@ -153,6 +164,7 @@ class PasswordItem extends React.Component {
                             <input className={style.input} type="text" value={this.state.password} onChange={(e)=>this.onPasswordChange(e)} style={style.edit}/>
                             <div style={{textAlign: "center", float: "center"}}>
                                 <IsCapitalValidIcon password={this.state.password}/>
+                                <IsLowercaseValidIcon password={this.state.password}/>
                                 <IsNumberValidIcon password={this.state.password}/>
                                 <IsSpecialValidIcon password={this.state.password}/>
                                 <IsLongValidIcon password={this.state.password}/>
@@ -176,7 +188,7 @@ class PasswordItem extends React.Component {
                         <td style={style.center}> <i onClick={this.deletePassword.bind(this, this.props.index, this.props.password.id)} className="material-icons" style={style.clickable} title="Delete">clear</i> </td>
                     </tr>
                 );
-            }    
+            }
         } else {
             return (
                 <tr>
@@ -186,8 +198,8 @@ class PasswordItem extends React.Component {
                 </tr>
             );
         }
-        
-        
+
+
     }
 
     componentDidMount() {
