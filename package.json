@@ -4,10 +4,12 @@
   "private": true,
   "dependencies": {
     "axios": "^0.16.1",
+    "enzyme": "^2.8.2",
     "json-server": "^0.10.1",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "react": "^15.5.4",
+    "react-addons-test-utils": "^15.5.1",
     "react-dom": "^15.5.4",
     "react-moment": "^0.2.2",
     "react-redux": "^5.0.5",

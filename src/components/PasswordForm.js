@@ -17,7 +17,7 @@ const PasswordVisibility = (props) => {
     }
 }
 
-class PasswordForm extends React.Component {
+export class PasswordForm extends React.Component {
 
     constructor(props) {
         super(props);
@@ -128,13 +128,17 @@ class PasswordForm extends React.Component {
                     createdAt: now.toISOString(),
                     updatedAt: ''
                 }
-                this.props.savePassword(data);
+                // this.props.savePassword(data);
                 this.setState({
                     url: '',
                     username: '',
                     password: '',
-                    message: ''
+                    message: 'password has been successfully saved'
                 });
+            } else {
+              this.setState({
+                message: "please satisfy the validation requirement"
+              });
             }
         } else {
             this.setState({
@@ -172,10 +176,6 @@ class PasswordForm extends React.Component {
         }
     }
 
-    test() {
-        alert('qqeqe');
-    }
-
     render() {
         if(this.props.savedPasswords) {
             return (
@@ -205,7 +205,7 @@ class PasswordForm extends React.Component {
                                         <br/>
                                     </div>
                                     <br/>
-                                    <button className={style.standardButton}  onClick={()=>this.handleSubmit()} >Save</button>
+                                    <button id="submitButton" className={style.standardButton}  onClick={()=>this.handleSubmit()} >Save</button>
                                     <p>{this.state.message}</p>
                                 </div>
                                 <div className="mdl-cell mdl-cell--6-col">
